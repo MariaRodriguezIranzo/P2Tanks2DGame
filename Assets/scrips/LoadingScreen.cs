@@ -23,7 +23,7 @@ public class LoadingScreen : MonoBehaviour
             musicManager.StopMusic(); // Detener la música
         }
         // Inicia la carga de la escena Level1
-        SceneManager.LoadScene("Level1");
+        SceneManager.LoadScene("Level2");
     }
 
     private void OnMultiplayerPlayButtonClick()
@@ -34,7 +34,7 @@ public class LoadingScreen : MonoBehaviour
             musicManager.StopMusic(); // Detener la música
         }
         // Inicia la carga de la escena Multiplayer
-        SceneManager.LoadScene("Level2");
+        SceneManager.LoadScene("Level1");
     }
 
     private void OnCreditosButtonClick()

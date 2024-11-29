@@ -7,10 +7,16 @@ public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 5f; // Velocidad de movimiento
     public GameObject bulletPrefab; // Prefab de la bala
-   
+    public Transform transforBullet;
+    public int health = 3; // Puntos de vida del jugador
+
     private Rigidbody2D rb;
     private Vector2 movementInput;
     private TankControls controls;
+    private SpriteRenderer spriteRenderer;
+
+    private float fireCooldown = 5f; // Cooldown entre disparos
+    private float lastFireTime;
 
     void Awake()
     {
@@ -43,6 +49,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void FixedUpdate()
@@ -61,16 +68,49 @@ public class PlayerMovement : MonoBehaviour
     {
         if (bulletPrefab != null)
         {
-            // Crear la bala en la posición del jugador
-            GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
+            GameObject bullet = Instantiate(bulletPrefab, transforBullet.position, transforBullet.rotation);
             Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
 
             if (bulletRb != null)
             {
-                // Asignar velocidad a la bala
-                bulletRb.velocity = transform.right * 10f; // Cambia a 'transform.up' si tu rotación apunta hacia arriba
+                bulletRb.velocity = transform.right * 10f; // Velocidad de la bala
             }
         }
     }
 
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        // No es necesario revisar si el objeto es el jugador, ya que eso se maneja en el Bullet
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            health--;
+
+            // Cambiar color a rojo temporalmente para indicar daño
+            StartCoroutine(FlashRed());
+
+            if (health <= 0)
+            {
+                Die();
+            }
+        }
+
+        if (Time.time - lastFireTime >= fireCooldown)
+        {
+            Fire();
+            lastFireTime = Time.time;
+        }
+    }
+
+    IEnumerator FlashRed()
+    {
+        spriteRenderer.color = Color.red;
+        yield return new WaitForSeconds(0.2f); // Duración del efecto
+        spriteRenderer.color = Color.white;   // Restaurar color original
+    }
+
+    public void Die()
+    {
+        Debug.Log($"{gameObject.name} ha muerto.");
+        Destroy(gameObject);
+    }
 }
