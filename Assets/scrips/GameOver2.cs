@@ -4,20 +4,27 @@ using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CreditsScreen : MonoBehaviour
+public class GameOver2 : MonoBehaviour
 {
+    public Button jugarNuevo2;
     public Button exitButton;
-    public Button jugarNuevo;
-    
 
     void Start()
     {
+        jugarNuevo2.onClick.AddListener(OnJugar2NuevoButtonClick);
         exitButton.onClick.AddListener(OnExitButtonClick);
-        jugarNuevo.onClick.AddListener(OnJugarNuevoButtonClick);
-        
+    }
+    private void OnJugar2NuevoButtonClick()
+    {
+        MusicManager musicManager = FindObjectOfType<MusicManager>();
+        if (musicManager != null)
+        {
+            musicManager.StopMusic(); // Detener la música
+        }
+        // Inicia la carga de la escena Menu
+        SceneManager.LoadScene("Level2");
     }
 
-    
     private void OnExitButtonClick()
     {
         MusicManager musicManager = FindObjectOfType<MusicManager>();
@@ -28,17 +35,4 @@ public class CreditsScreen : MonoBehaviour
         // Inicia la carga de la escena Creditos
         SceneManager.LoadScene("menu");
     }
-
-    private void OnJugarNuevoButtonClick()
-    {
-        MusicManager musicManager = FindObjectOfType<MusicManager>();
-        if (musicManager != null)
-        {
-            musicManager.StopMusic(); // Detener la música
-        }
-        // Inicia la carga de la escena Menu
-        SceneManager.LoadScene("Level1");
-    }
-
-   
 }

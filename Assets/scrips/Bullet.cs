@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Bullet : MonoBehaviour
 {
     public float bulletSpeed = 10f; // Velocidad de la bala
-    public float lifetime = 5f;     // Tiempo antes de destruir la bala
+    public float lifetime = 2f;     // Tiempo antes de destruir la bala
 
     private Rigidbody2D rb;
 
@@ -13,17 +14,16 @@ public class Bullet : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
 
-        if (rb == null)
-        {
-            Debug.LogError("El prefab de la bala necesita un Rigidbody2D.");
-            return;
-        }
-
         // Mover la bala hacia adelante en la dirección en que está orientada
-        rb.velocity = transform.up * bulletSpeed;
+        rb.velocity = transform.right * bulletSpeed;
+       
+    }
 
-        // Destruir la bala después de un tiempo
-        Destroy(gameObject, lifetime);
+    void Update()
+    {
+
+       Destroy(gameObject,lifetime);
+
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -47,15 +47,14 @@ public class Bullet : MonoBehaviour
                 StartCoroutine(FlashRed(player));
 
                 // Si la salud del jugador es 0 o menor, llamamos al método de muerte
-                if (player.health <= 0)
+                if (player.health == 0)
                 {
-                    player.Die();
+                    SceneManager.LoadScene("GameOver");
                 }
             }
             // Destruir la bala después de impactar
             Destroy(gameObject);
         }
-        Debug.Log("holaaa");
     }
 
     // Método para cambiar temporalmente el color del jugador al ser golpeado por la bala

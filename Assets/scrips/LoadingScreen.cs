@@ -1,3 +1,4 @@
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -7,12 +8,15 @@ public class LoadingScreen : MonoBehaviour
     public Button playButton;
     public Button multiplayerPlay;
     public Button creditos;
+    
 
     void Start()
     {
         playButton.onClick.AddListener(OnPlayButtonClick);
         multiplayerPlay.onClick.AddListener(OnMultiplayerPlayButtonClick);
         creditos.onClick.AddListener(OnCreditosButtonClick);
+        
+
     }
 
     private void OnPlayButtonClick()
@@ -47,5 +51,7 @@ public class LoadingScreen : MonoBehaviour
         // Inicia la carga de la escena Creditos
         SceneManager.LoadScene("credits");
     }
+
+    
 
 }
