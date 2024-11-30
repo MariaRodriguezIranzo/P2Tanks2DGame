@@ -8,6 +8,8 @@ public class Bullet : MonoBehaviour
     public float bulletSpeed = 10f; // Velocidad de la bala
     public float lifetime = 2f;     // Tiempo antes de destruir la bala
 
+    public int damage = 1; // Daño de la bala
+
     private Rigidbody2D rb;
 
     void Start()
@@ -52,6 +54,24 @@ public class Bullet : MonoBehaviour
                     SceneManager.LoadScene("GameOver");
                 }
             }
+            // Destruir la bala después de impactar
+            Destroy(gameObject);
+            // Si la bala impacta a un enemigo
+            
+        }
+        if (other.CompareTag("Enemy"))
+        {
+            EnemyController enemy = other.GetComponent<EnemyController>();
+
+            if (enemy != null)
+            {
+                // Reducir la vida del enemigo
+                enemy.TakeDamage(damage);
+
+                // Mostrar un mensaje de depuración para verificar si el daño se aplica correctamente
+                Debug.Log($"El enemigo ha sido golpeado. Salud restante: {enemy.health}");
+            }
+
             // Destruir la bala después de impactar
             Destroy(gameObject);
         }
