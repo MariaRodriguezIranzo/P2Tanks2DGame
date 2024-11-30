@@ -9,6 +9,8 @@ public class PlayerMovement : MonoBehaviour
     public GameObject bulletPrefab; // Prefab de la bala
     public Transform transforBullet;
     public int health = 3; // Puntos de vida del jugador
+    //audio disparo
+    public AudioSource audioDisparo;
 
     private Rigidbody2D rb;
     private Vector2 movementInput;
@@ -66,6 +68,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Fire()
     {
+        audioDisparo.Play();
         if (bulletPrefab != null)
         {
             GameObject bullet = Instantiate(bulletPrefab, transforBullet.position, transforBullet.rotation);
@@ -74,6 +77,7 @@ public class PlayerMovement : MonoBehaviour
             if (bulletRb != null)
             {
                 bulletRb.velocity = transform.right * 10f; // Velocidad de la bala
+
             }
         }
     }
